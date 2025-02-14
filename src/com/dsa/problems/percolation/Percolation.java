@@ -3,45 +3,57 @@ package com.dsa.problems.percolation;
 
 public class Percolation {
 
-    public int top;
-    public int bottom;
+    public int virtualTop;
+    public int virtualBottom;
     public int grid;
     public boolean[] openSites;
-    public WeightedQuickUnion wq;
+    public WeightedQuickUnion percolationWQ;
+    public WeightedQuickUnion fullnessWQ;
 
     public Percolation(int n) {
         if(n <= 0) {
             throw new IllegalArgumentException("n should be greater then 0");
         }
-        wq = new WeightedQuickUnion(n);
+        percolationWQ = new WeightedQuickUnion(n * n + 2);
+        fullnessWQ = new WeightedQuickUnion(n * n + 1);
         openSites = new boolean[n * n];
-        top = n * n;
-        bottom = n * n + 1;
         grid = n;
+        virtualTop = n * n;
+        virtualBottom = n * n + 1;
     }
 
     public void open(int row, int col) {
-        int index = getIndex(row, col);
-        openSites[index] = true;
+        int pIndex = getIndex(row, col);
+        openSites[pIndex] = true;
 
         if(row == 1) {
-            wq.union(top, index);
+            percolationWQ.union(virtualTop, pIndex);
+            fullnessWQ.union(virtualTop, pIndex);
         }
         if(row == grid) {
-            wq.union(bottom, index);
+            percolationWQ.union(virtualBottom, pIndex);
         }
 
+        int qIndex;
         if(row > 1 && isOpen(row - 1, col)) {
-            wq.union(index, getIndex(row - 1, col));
+            qIndex = getIndex(row - 1, col);
+            percolationWQ.union(pIndex, qIndex);
+            fullnessWQ.union(pIndex, qIndex);
         }
         if(row < grid && isOpen(row + 1, col)) {
-            wq.union(index, getIndex(row + 1, col));
+            qIndex = getIndex(row + 1, col);
+            percolationWQ.union(pIndex, qIndex);
+            fullnessWQ.union(pIndex, qIndex);
         }
         if(col > 1 && isOpen(row, col - 1)) {
-            wq.union(index, getIndex(row, col - 1));
+            qIndex = getIndex(row, col - 1);
+            percolationWQ.union(pIndex, qIndex);
+            fullnessWQ.union(pIndex, qIndex);
         }
         if(col < grid && isOpen(row, col + 1)) {
-            wq.union(index, getIndex(row, col + 1));
+            qIndex = getIndex(row, col + 1);
+            percolationWQ.union(pIndex, qIndex);
+            fullnessWQ.union(pIndex, qIndex);
         }
     }
 
@@ -55,7 +67,7 @@ public class Percolation {
             throw new IllegalArgumentException("Index out of bound");
         }
 
-        return wq.connected(top, getIndex(row, col));
+        return fullnessWQ.connected(virtualTop, getIndex(row, col));
     }
 
     public int numberOfOpenSites() {
@@ -69,7 +81,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return wq.connected(top, bottom);
+        return percolationWQ.connected(virtualTop, virtualBottom);
     }
 
     public int getIndex(int row, int col) {
@@ -77,6 +89,6 @@ public class Percolation {
     }
 
     public WeightedQuickUnion getUnion() {
-        return this.wq;
+        return this.percolationWQ;
     }
 }
