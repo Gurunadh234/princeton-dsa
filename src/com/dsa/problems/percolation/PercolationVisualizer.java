@@ -86,7 +86,7 @@ public class PercolationVisualizer extends JFrame {
             }
 
             try {
-                Thread.sleep(100); // Delay for visualization effect
+                Thread.sleep(50); // Delay for visualization effect
             } catch (InterruptedException ignored) { }
         }
 

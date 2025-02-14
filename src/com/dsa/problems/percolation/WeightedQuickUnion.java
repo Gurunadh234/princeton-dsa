@@ -6,10 +6,9 @@ public class WeightedQuickUnion {
     public int[] sz;
 
     public WeightedQuickUnion(int n) {
-        int size = n * n + 2;
-        id = new int[size];
-        sz = new int[size];
-        for(int i=0; i<size; i++) {
+        id = new int[n];
+        sz = new int[n];
+        for(int i=0; i<n; i++) {
             id[i] = i;
             sz[i] = 1;
         }
