@@ -24,7 +24,7 @@ public class ArrayStackOfStrings implements StackInterface {
 
     @Override
     public void push(String item) {
-        if(N == stack.length) resize(2 * stack.length);
+        if(N == stack.length - 1) resize(2 * stack.length);
         stack[N++] = item;
     }
 
