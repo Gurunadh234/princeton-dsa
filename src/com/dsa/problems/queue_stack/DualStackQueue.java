@@ -1,4 +1,4 @@
-package com.dsa.problems.queue;
+package com.dsa.problems.queue_stack;
 
 import com.dsa.practice.queues.QueueInterface;
 
@@ -35,6 +35,10 @@ public class DualStackQueue implements QueueInterface {
         }
 
         return deQueueStack.pop();
+    }
+
+    public String getMax() {
+        return deQueueStack.peek();
     }
 
     @Override

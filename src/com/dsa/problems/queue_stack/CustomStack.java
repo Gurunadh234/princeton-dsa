@@ -1,4 +1,4 @@
-package com.dsa.problems.queue;
+package com.dsa.problems.queue_stack;
 
 import com.dsa.practice.stacks.StackInterface;
 
@@ -42,6 +42,10 @@ public class CustomStack implements StackInterface {
         head = head.next;
 
         return item;
+    }
+
+    public String peek() {
+        return head.item;
     }
 
     @Override
